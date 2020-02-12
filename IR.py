@@ -10,7 +10,7 @@ from nltk.stem.porter import *
 import string
 import collections
 from sklearn.feature_extraction.text import TfidfVectorizer
-nltk.download()
+#nltk.download()
 
 import numpy as np
 
