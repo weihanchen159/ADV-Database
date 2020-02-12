@@ -97,7 +97,7 @@ while True:
             # drop blank lines
             text = '\n'.join(chunk for chunk in chunks if chunk)
             TEXT.append(text)
-        except HTTPError:
+        except HTTPError or TimeoutError:
             TEXT.append(res['items'][URL[i][1]]['snippet'])
 
     # Tokenize the context
