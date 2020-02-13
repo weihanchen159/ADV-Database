@@ -10,7 +10,7 @@ from nltk.stem.porter import *
 import string
 import collections
 from sklearn.feature_extraction.text import TfidfVectorizer
-#nltk.download()
+# nltk.download()
 
 import numpy as np
 
@@ -21,14 +21,16 @@ query = sys.argv[1].split()
 origin_q = query
 precision = float(sys.argv[2])
 
+
 # Tokenize, take the stem of the words, remove stop words
 def get_tokens(text):
     lowers = text.lower()
-    #remove the punctuation using the character deletion step of translate
+    # remove the punctuation using the character deletion step of translate
     remove_punctuation_map = dict((ord(char), None) for char in string.punctuation)
     no_punctuation = lowers.translate(remove_punctuation_map)
     tokens = nltk.word_tokenize(no_punctuation)
     return tokens
+
 
 def stem_tokens(tokens, stemmer):
     stemmed = []
@@ -36,47 +38,49 @@ def stem_tokens(tokens, stemmer):
         stemmed.append(stemmer.stem(item))
     return stemmed
 
+
 while True:
     # Retrieve top-10 Relevant Results From Google
-    service = build("customsearch", "v1", developerKey="AIzaSyBKlE390a0krI3_Oe-zk-_Pdf7J0J7Oo1I")   
-    res = service.cse().list(q=' '.join(query), cx='000568897140034501999:kyspcqzrszq',).execute()
+    service = build("customsearch", "v1", developerKey="AIzaSyD7LtB-16PwWj4vrPkq3BmFonIk4oXaKi4")
+    res = service.cse().list(q=' '.join(query), cx='011699874424413628847:oswjbylewld', ).execute()
 
     # count the number of relevant results
     cnt = 0
     # store relevant results, (and its index in the retreival list, type: [(url1, index1), (url2, index2), ...])
     URL = []
+    TEXT = []
 
     for i in range(len(res['items'])):
-        print(i+1, 'Title: ', res['items'][i]['title'], '\n')
+        print(i + 1, 'Title: ', res['items'][i]['title'], '\n')
         print('URL: ', res['items'][i]['link'], '\n')
         print('Description: ', res['items'][i]['snippet'], '\n')
         print('\n\n')
         reply = input("Relevant (Y/N)?")
         if reply == 'Y':
             URL.append((res['items'][i]['link'], i))
+            TEXT.append(res['items'][i]['snippet'])
             cnt += 1
 
     if cnt >= precision * 10:
         print('FEEDBACK SUMMARY\n')
         print('Query: ', origin_q, '\n')
-        print('Precision: ', cnt/10, '\n')
+        print('Precision: ', cnt / 10, '\n')
         print('Desired precision reached, done\n')
         break
     elif cnt == 0:
         print('FEEDBACK SUMMARY\n')
         print('Query: ', origin_q, '\n')
-        print('Precision: ', cnt/10, '\n')
+        print('Precision: ', cnt / 10, '\n')
         print('No relevant result, terminate\n')
         break
     else:
         print('FEEDBACK SUMMARY\n')
         print('Query: ', origin_q, '\n')
         print('Current Query: ', query, '\n')
-        print('Precision: ', cnt/10, '\n')
+        print('Precision: ', cnt / 10, '\n')
         print('Not yet reach desired precision, continue\n')
 
     # Retrieve website context
-    TEXT = []
     for i in range(len(URL)):
         req = urllib.request.Request(URL[i][0], headers={'User-Agent': 'Mozilla/5.0'})
         # If the access being denied, append the short description to TEXT
@@ -85,11 +89,11 @@ while True:
             soup = BeautifulSoup(html, features="html.parser")
             # kill all script and style elements
             for script in soup(["script", "style"]):
-                script.extract()    # rip it out
+                script.extract()  # rip it out
 
             # get text
             text = soup.get_text()
-        
+
             # break into lines and remove leading and trailing space on each
             lines = (line.strip() for line in text.splitlines())
             # break multi-headlines into a line each
@@ -122,7 +126,7 @@ while True:
     # find candidate word by choosing the token with highest summation value over all the document
     # if this token already exists in the query, take the next highest one
     # from the origin word collection, choose the most frequent word related to this token
-    flatten = np.sum(tfidf, axis = 0)
+    flatten = np.sum(tfidf, axis=0)
     found_new_word = False
     while not found_new_word:
         cand_idx = flatten.argmax()
