@@ -34,7 +34,7 @@ with CoreNLPClient(annotators=['tokenize', 'ssplit', 'pos', 'lemma', 'ner'],
                 res += tem2
 with CoreNLPClient(annotators=['tokenize', 'ssplit', 'pos', 'lemma', 'ner', 'depparse', 'coref', 'kbp'],
                    timeout=30000, memory='16G') as client2:
-    ann2 = client2.annotate(tem2)
+    ann2 = client2.annotate(res)
     print(ann2.sentence[0].kbpTriple)
 
 
