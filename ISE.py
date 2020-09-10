@@ -40,8 +40,8 @@ with CoreNLPClient(annotators=['tokenize', 'ssplit', 'pos', 'lemma', 'ner'], tim
 		while len(res) < 10:
 			print('=========== Iteration: ',iter,' - Query: ',query,' ===========\n')
 			# Retrieve top-10 Relevant Results From Google
-			service = build("customsearch", "v1", developerKey="AIzaSyD7LtB-16PwWj4vrPkq3BmFonIk4oXaKi4")
-			search_res = service.cse().list(q=query, cx='011699874424413628847:oswjbylewld', ).execute()
+			service = build("customsearch", "v1", developerKey="")
+			search_res = service.cse().list(q=query, cx='d', ).execute()
 			for i in range(len(search_res['items'])):
 				URL = search_res['items'][i]['link']
 				print('URL (',i+1,' / 10):', URL, '\n')
