@@ -44,8 +44,8 @@ def stem_tokens(tokens, stemmer):
 if method == "1":
     while True:
         # Retrieve top-10 Relevant Results From Google
-        service = build("customsearch", "v1", developerKey="AIzaSyD7LtB-16PwWj4vrPkq3BmFonIk4oXaKi4")
-        res = service.cse().list(q=' '.join(query), cx='011699874424413628847:oswjbylewld', ).execute()
+        service = build("customsearch", "v1", developerKey="")
+        res = service.cse().list(q=' '.join(query), cx='', ).execute()
 
         # count the number of relevant results
         cnt = 0
@@ -104,8 +104,8 @@ if method == "1":
 elif method == "2":
     while True:
         # Retrieve top-10 Relevant Results From Google
-        service = build("customsearch", "v1", developerKey="AIzaSyD7LtB-16PwWj4vrPkq3BmFonIk4oXaKi4")
-        res = service.cse().list(q=' '.join(query), cx='011699874424413628847:oswjbylewld', ).execute()
+        service = build("customsearch", "v1", developerKey="")
+        res = service.cse().list(q=' '.join(query), cx='', ).execute()
 
         # count the number of relevant results
         cnt = 0
