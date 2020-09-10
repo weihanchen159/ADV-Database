@@ -24,8 +24,8 @@ with CoreNLPClient(annotators=['tokenize', 'ssplit', 'pos', 'lemma', 'ner'], tim
         memory = {}
         final_res = {}
         while True:
-            service = build("customsearch", "v1", developerKey="AIzaSyD7LtB-16PwWj4vrPkq3BmFonIk4oXaKi4")
-            res = service.cse().list(q=' '.join(query), cx='011699874424413628847:oswjbylewld', ).execute()
+            service = build("customsearch", "v1", developerKey="")
+            res = service.cse().list(q=' '.join(query), cx='', ).execute()
 
             URL = []
             TEXT = []
